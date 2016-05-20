@@ -1,6 +1,6 @@
 ---
 applications:
-- name: FinAdvisorApp2
+- name: FinAdvisorApp
   command: python manage.py runserver
   path: .
   memory: 256M

@@ -4,7 +4,7 @@ from . import main
 from ..models import Client, Advisor
 from .forms import ClientRegisterForm
 from .. import db
-from app.main.forms import IdentifyOpportunityForm
+from app.main.forms import IdentifyOpportunityForm, IdentifyOpportunityURLForm
 
 from ..Watson import Services
 
@@ -38,14 +38,29 @@ def addClient():
         return redirect(url_for('main.dashboard'))
     return render_template('addClient.html', form=form)
 
-@main.route('/idntfyOpportunity',  methods=['GET', 'POST'])
-def identifyOpportunity():
-    form = IdentifyOpportunityForm()
-    if form.validate_on_submit():
-        response = Services.AlchemyLanguageText(form.text.data)
-        return render_template('idntfyOpportunity.html', form=form,var="yes",response=response) #redirect(url_for('main.identifyOpportunity'),var="yes")
-    
-    return render_template('idntfyOpportunity.html', form=form)
 
+@main.route('/identifyOpportunity',  methods=['GET', 'POST'])
+def identifyOpportunity():
+    textForm = IdentifyOpportunityForm()
+    
+    if textForm.validate_on_submit() and textForm.textGo.data:
+        response = Services.AlchemyLanguageText(textForm.text.data)
+        return render_template('idntfyOpportunity.html', form=textForm,var="yes",response=response)
+    
+    return render_template('idntfyOpportunity.html', form=textForm)
+ 
+@main.route('/idntfyOpportunity#url',  methods=['GET', 'POST'])
+def identifyOpportunityUrl():
+    print("in URL")
+    urlForm = IdentifyOpportunityURLForm()
+    if urlForm.validate_on_submit() and urlForm.urlGo.data:
+        response = Services.AlchemyLanguageText(urlForm.text.data)
+        return render_template('idntfyOpportunity.html', form=urlForm,var="yes",response=response)
+    
+    return render_template('idntfyOpportunity.html', form=urlForm)   
+    
+@main.route('/processURL#url',  methods=['GET', 'POST'])
+def ProcessURL():
+    print("IN..............")    
 
     

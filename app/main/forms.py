@@ -21,4 +21,8 @@ class ClientRegisterForm(Form):
 
 class IdentifyOpportunityForm(Form) :
     text = TextAreaField('Enter Text Here', validators=[Required()])
-    submit = SubmitField('Go!')
+    textGo = SubmitField('Go!')
+    
+class IdentifyOpportunityURLForm(Form) :
+    text = TextAreaField('Enter URL Here', validators=[Required()])
+    urlGo = SubmitField('Go...!')

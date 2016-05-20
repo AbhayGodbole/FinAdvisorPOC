@@ -5,9 +5,20 @@
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Advisor Login</h1>
+    <h2>Advisor Login</h2>
 </div>
 <div class="col-md-8">
-    {{ wtf.quick_form(form) }}
+	 
+ <!-- <form action="" method="post" name="loginForm">   
+  		 {{ form.hidden_tag() }}
+  		 <label for="exampleInputEmail1">Email Address</label>
+  		<p> {{ form.email(class="form-control") }} </p>
+  		<label for="exampleInputPassword1">Password</label>
+  		<p> {{ form.password(class="form-control") }} </p>
+  		 {{ form.submit(class="btn btn-primary") }}		
+  		 
+  </form>
+ -->
+ 		{{ wtf.quick_form(form) }}
 </div>
 {% endblock %}
