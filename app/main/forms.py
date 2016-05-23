@@ -1,6 +1,6 @@
 from flask.ext.wtf import Form
 from wtforms import StringField, SubmitField, TextAreaField
-from wtforms.validators import Required, Email, Length, ValidationError
+from wtforms.validators import Required, Email, Length, ValidationError, URL
 from ..models import Client
 
 class NameForm(Form):
@@ -19,10 +19,14 @@ class ClientRegisterForm(Form):
         if Client.query.filter_by(email=field.data).first():
             raise ValidationError('Client already registered with this Email ID.')
 
-class IdentifyOpportunityForm(Form) :
+class IdentifyOpportunityTextForm(Form) :
     text = TextAreaField('Enter Text Here', validators=[Required()])
-    textGo = SubmitField('Go!')
+    textGo = SubmitField('Submit to AlchemyLanguage')
     
 class IdentifyOpportunityURLForm(Form) :
-    text = TextAreaField('Enter URL Here', validators=[Required()])
-    urlGo = SubmitField('Go...!')
+    text = StringField('Enter URL Here', validators=[Required(),URL()])
+    urlGo = SubmitField('Submit to AlchemyLanguage')
+
+class IdentifyOpportunityHTMLForm(Form) :
+    text = TextAreaField('Enter HTML Here', validators=[Required()])
+    htmlGo = SubmitField('Submit to AlchemyLanguage')    

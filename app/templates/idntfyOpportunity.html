@@ -3,50 +3,18 @@
 {% block title %}Identify Opportunity{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h4>Identify Opportunity</h4> <br>
-     <ul class="nav nav-tabs">
-	 <li id="info" role="presentation" class="active"><a href="#Info" data-toggle="tab">Info</a></li>
-	 <li id="Text" role="presentation" class=""><a href="#text"  data-toggle="tab">Text</a></li>
-	 <li id="Url" role="presentation"><a href="#url" data-toggle="tab">Url</a></li>
-	<li><a href="#html" data-toggle="tab">HTML</a></li>
- </ul>
-</div>
-
-<div class="tab-content">	
-	<div class="tab-pane active" id="Info">
-		<h4>Information about Identify Opportunity, What it all about...</h4>
-		<!-- <div class="col-md-820">  -->
+	<div class="page-header">
+	    <h4>Identify Opportunity</h4>
 	</div>
-	<div class="tab-pane"  id="text">
-		
-		{{ wtf.quick_form(form) }}
-		{% if var=="yes" %}
-			<h3>Output of Watson Service Here....</h3>
-			{% if response %}
-				<Pre>
-					{{ response }}
-				</Pre>
-			{% endif %}
-		{% endif %}		
-		<!-- <div class="col-md-820">  -->
+	<div class="page-contentr">
+			{% include "textForm.html" %}	
 	</div>
-	<div class="tab-pane" id="url">
-		{% include "urlForm.html" %}
-		{% if var=="yes" %}
-			<h3>Output of Watson Service Here....</h3>
-			{% if response %}
-				<Pre>
-					{{ response }}
-				</Pre>
-			{% endif %}
-		{% endif %}		
-	<!--	{{ wtf.quick_form(form) }}
-		 <div class="col-md-820">  -->
-	</div>
-	<div class="tab-pane" id="html">
-		<h4>HTML Input...</h4>
-		<!-- <div class="col-md-820">  -->
-	</div>
-</div>
+	{% if var=="yes" %}
+		<h3>Output of Watson Service Here....</h3>
+		{% if response %}
+			<Pre>
+				{{ response }}
+			</Pre>
+		{% endif %}
+	{% endif %}		
 {% endblock %}

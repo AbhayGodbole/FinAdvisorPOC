@@ -4,9 +4,10 @@ from . import main
 from ..models import Client, Advisor
 from .forms import ClientRegisterForm
 from .. import db
-from app.main.forms import IdentifyOpportunityForm, IdentifyOpportunityURLForm
-
+from app.main.forms import IdentifyOpportunityTextForm, IdentifyOpportunityURLForm, IdentifyOpportunityHTMLForm
+import json
 from ..Watson import Services
+from app.Watson.Services import getConcepts, getKeywords
 
 @main.route('/')
 def index():
@@ -41,26 +42,59 @@ def addClient():
 
 @main.route('/identifyOpportunity',  methods=['GET', 'POST'])
 def identifyOpportunity():
-    textForm = IdentifyOpportunityForm()
+    """   textForm = IdentifyOpportunityForm()
     
     if textForm.validate_on_submit() and textForm.textGo.data:
         response = Services.AlchemyLanguageText(textForm.text.data)
         return render_template('idntfyOpportunity.html', form=textForm,var="yes",response=response)
-    
-    return render_template('idntfyOpportunity.html', form=textForm)
+    """
+    form = IdentifyOpportunityTextForm()
+    return render_template('idntfyOpportunity.html', form=form)
  
-@main.route('/idntfyOpportunity#url',  methods=['GET', 'POST'])
-def identifyOpportunityUrl():
-    print("in URL")
+@main.route('/processText',  methods=['GET', 'POST'])
+def ProcessText():
+    textForm = IdentifyOpportunityTextForm()
+    if textForm.validate_on_submit() and textForm.textGo.data:
+        response = Services.AlchemyLanguageText(textForm.text.data,"Text")
+        
+        """ Extract the Concepts and Keywords """
+        concepts = getConcepts(response)
+        print ("###### ",concepts)
+        keywords = getKeywords(response)
+        RecommendationsOnConcepts  = Services.AlchemyDataNewsConcept(concepts)
+        RecommendationsOnKeywords = Services.AlchemyDataNewsKeyword(keywords)
+    
+        return render_template('textForm.html', form=textForm,var="yes",response=response, concepts=concepts, keywords=keywords, RecommendationsOnConcepts  = json.loads(RecommendationsOnConcepts), RecommendationsOnKeywords  = json.loads(RecommendationsOnKeywords ))
+    return render_template('textForm.html', form=textForm)   
+    
+@main.route('/processURL',  methods=['GET', 'POST'])
+def ProcessURL():
     urlForm = IdentifyOpportunityURLForm()
     if urlForm.validate_on_submit() and urlForm.urlGo.data:
-        response = Services.AlchemyLanguageText(urlForm.text.data)
-        return render_template('idntfyOpportunity.html', form=urlForm,var="yes",response=response)
+        response = Services.AlchemyLanguageText(urlForm.text.data,"Url")
+        
+        """ Extract the Concepts and Keywords """
+        concepts = getConcepts(response)
+        keywords = getKeywords(response)
+        
+        RecommendationsOnConcepts  = Services.AlchemyDataNewsConcept(concepts)
+        RecommendationsOnKeywords = Services.AlchemyDataNewsKeyword(keywords)
+        
+        return render_template('urlForm.html', form=urlForm,var="yes",response=response, concepts=concepts, keywords=keywords, RecommendationsOnConcepts  = json.loads(RecommendationsOnConcepts), RecommendationsOnKeywords  = json.loads(RecommendationsOnKeywords ))
     
-    return render_template('idntfyOpportunity.html', form=urlForm)   
-    
-@main.route('/processURL#url',  methods=['GET', 'POST'])
-def ProcessURL():
-    print("IN..............")    
+    return render_template('urlForm.html', form=urlForm)
 
+@main.route('/processHTML',  methods=['GET', 'POST'])
+def ProcessHTML():
+    htmlForm = IdentifyOpportunityHTMLForm()
+    if htmlForm.validate_on_submit() and htmlForm.htmlGo.data:
+        response = Services.AlchemyLanguageText(htmlForm.text.data,"HTML")
+        
+        """ Extract the Concepts and Keywords """
+        concepts = getConcepts(response)
+        keywords = getKeywords(response)
+        
+        return render_template('htmlForm.html', form=htmlForm,var="yes",response=response, concepts=concepts, keywords=keywords)
+    
+    return render_template('htmlForm.html', form=htmlForm)      
     

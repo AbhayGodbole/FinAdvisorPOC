@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#result" aria-controls="home" role="tab" data-toggle="tab">Results</a></li>
+    <li role="presentation"><a href="#rec" aria-controls="profile" role="tab" data-toggle="tab">Recomondations</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+    <div role="tabpanel" class="tab-pane active" id="result">
+    	{% if var=="yes" %}
+	<div style="overflow-x: auto;">
+	<table class="table">
+  <thead class="thead-inverse">
+    <tr>
+      <th>Concepts</th>
+      <th>Relevance</th>
+    </tr>
+  </thead>
+  	 <tbody>
+    <tr>
+			{% if response %}
+					{% for concept in concepts %}
+						<th scope="row">{{ concept['text'] }}</th>
+						<td>{{ (concept['relevance'] | float * 100)  | round  }}%
+				</tr>
+			{% endfor %}
+		</table>
+	{%endif %} 
+	
+	{%endif %}
+	</tbody>
+    </div>
+    </div>
+    
+    <div role="tabpanel" class="tab-pane" id="rec">
+    
+    <h4>AlchemyData News Recomondations Here....</h4>
+  </div>
+</body>
+</html>
+
+
